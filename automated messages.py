@@ -26,22 +26,27 @@ class Automated_Message:
         sleep(5)
 
     def check_birthday(self):
-        now = dt.datetime.today()
-        content = pandas.read_csv('birthday.csv')
-        today_date = now.day
-        today_month = now.month
-        birth_date = content['day']
+        try:
+            now = dt.datetime.today()
+            content = pandas.read_csv('birthday.csv')
+            today_date = now.day
+            today_month = now.month
+            birth_date = content['day']
 
-        content_dict = content.to_dict()  # converting to dictionary
-        birthdate_day_list = birth_date.to_list()
-        birthdate_month_list = content['month'].to_list()
+            content_dict = content.to_dict()  # converting to dictionary
+            birthdate_day_list = birth_date.to_list()
+            birthdate_month_list = content['month'].to_list()
 
-        content_df = content[(content['day'] == today_date) & (content['month'] == today_month)]
+            content_df = content[(content['day'] == today_date) & (content['month'] == today_month)]
 
-        birthday_person = str(content_df.iloc[0]['name'])
-        print(birthday_person)
-        birthday_acc = str(content_df.iloc[0]['email'])
-        print(birthday_acc)
+            birthday_person = str(content_df.iloc[0]['name'])
+            print(birthday_person)
+            birthday_acc = str(content_df.iloc[0]['email'])
+            print(birthday_acc)
+            MESSAGE = 'Happy Birthday'
+        except:
+            MESSAGE = 'No birthdays today'
+            birthday_acc = '_shubhrima_'
         msg = self.driver.find_element_by_css_selector('.xWeGp svg')
         msg.click()
         print('step 1')
@@ -63,8 +68,10 @@ class Automated_Message:
         next.click()
         sleep(4)
         message = self.driver.find_element_by_css_selector('textarea')
-        message.send_keys('Happy Birthday 🎊🎉')
+        message.send_keys(MESSAGE)
         message.send_keys(Keys.ENTER)
+
+
 
 
 bot = Automated_Message(CHROME_DRIVER_PATH)
